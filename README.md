@@ -1,9 +1,12 @@
-GameWork.Core
+# Overview
 
-Engine agnostic C# Framework for building games
+Engine agnostic C# Framework for building games.
 
-Source:
-https://github.com/Game-Work/GameWork.Core
-
-Build Tools:
+## Build Tools
 BuildAll: Run .\Tools\BuildAll.ps1
+
+# License
+See the [license](LICENSE.md) file.
+
+# Contributors
+See the [contributors](CONTRIBUTORS.md) file.
