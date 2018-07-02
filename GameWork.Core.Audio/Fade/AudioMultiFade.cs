@@ -23,7 +23,7 @@ namespace GameWork.Core.Audio.Fade
         {
             get
             {
-                return MathF.Lerp(_currentModel.StartVolume,
+                return Math.MathF.Lerp(_currentModel.StartVolume,
                  _currentModel.TargetVolume,
               (_elapsedTime - _completedDurations) / _currentModel.Duration);
             }
