@@ -6,14 +6,18 @@ namespace GameWork.Core.States.Tick
 	public abstract class TickState : EventState
 	{
 		private readonly List<TickStateTransition> _transitions = new List<TickStateTransition>();
-
-		public void AddTransitions(params TickStateTransition[] stateTransitions)
+        
+		protected TickState(params TickStateTransition[] stateTransitions) : base(stateTransitions)
 		{
 			_transitions.AddRange(stateTransitions);
-			base.AddTransitions(stateTransitions);
 		}
-		
-		protected virtual void OnTick(float deltaTime)
+
+	    /// <summary>
+	    /// Called when the state is being ticked.
+	    /// Override and add your logic here.
+	    /// </summary>
+        /// <param name="deltaTime"></param>
+        protected virtual void OnTick(float deltaTime)
 		{
 		}
 		

@@ -2,6 +2,9 @@
 
 namespace GameWork.Core.Audio.Fade
 {
+    /// <summary>
+    /// Used by an <see cref="AudioFadeState"/>.
+    /// </summary>
 	public class AudioFadeModel : IModel
     {
 		public float StartVolume { get; set; }

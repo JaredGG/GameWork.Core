@@ -1,6 +1,11 @@
-﻿namespace GameWork.Core.Audio.Clip
+﻿using GameWork.Core.Models.Interfaces;
+
+namespace GameWork.Core.Audio.Clip
 {
-    public class AudioClipModel
+    /// <summary>
+    /// An individual Audio Clip used by the <see cref="AudioController"/>.
+    /// </summary>
+    public class AudioClipModel : IModel
     {
         public string Name { get; set; }
 

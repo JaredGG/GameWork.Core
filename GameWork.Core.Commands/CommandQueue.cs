@@ -13,12 +13,9 @@ namespace GameWork.Core.Commands
 	{
         private readonly List<TCommand> _commands = new List<TCommand>();
 
-        public bool HasCommands
-        {
-            get { return _commands.Any(); }
-        }
+        public bool HasCommands => _commands.Any();
 
-        public void AddCommand(TCommand command)
+	    public void AddCommand(TCommand command)
         {
             _commands.Add(command);
         }

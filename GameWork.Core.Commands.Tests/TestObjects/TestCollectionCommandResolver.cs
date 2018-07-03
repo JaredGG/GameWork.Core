@@ -14,10 +14,7 @@ namespace GameWork.Core.Commands.Tests.TestObjects
 		public override void ProcessCommand(ICommand command)
 		{
 			var addToTestCollectionCommand = (AddToTestCollectionCommand<T>) command;
-			if (addToTestCollectionCommand != null)
-			{
-				addToTestCollectionCommand.Execute(_testCollection);
-			}
+		    addToTestCollectionCommand?.Execute(_testCollection);
 		}
 	}
 }

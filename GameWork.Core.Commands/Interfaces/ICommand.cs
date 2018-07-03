@@ -4,7 +4,7 @@
     {
     }
 
-    public interface ICommand<TCommandAction> : ICommand
+    public interface ICommand<in TCommandAction> : ICommand
         where TCommandAction : ICommandAction
     {
         void Execute(TCommandAction implementor);

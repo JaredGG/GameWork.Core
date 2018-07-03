@@ -9,13 +9,16 @@ using GameWork.Core.Audio.PlatformAdaptors;
 
 namespace GameWork.Core.Audio
 {
+    /// <summary>
+    /// Tickable controller that provides various audio related functionalty.
+    /// </summary>
 	public class AudioController : TickController
 	{
 		private readonly float _volumeLowerLimit;
 		private readonly float _volumeUpperLimit;
 
 		private readonly IAudioChannel[] _channels;
-		private readonly List<IAudioFade> _activeAudioFades;
+		private readonly List<IAudioFadeState> _activeAudioFades;
 		private readonly Dictionary<AudioClipModel, IAudioChannel> _occupiedChannels = new Dictionary<AudioClipModel, IAudioChannel>();
 
 		public AudioController(IAudioChannelFactory audioChannelFactory, int channelCount = 32, float volumeLowerLimit = 0, float volumeUpperLimit = 1)
@@ -23,10 +26,14 @@ namespace GameWork.Core.Audio
 			_volumeLowerLimit = volumeLowerLimit;
 			_volumeUpperLimit = volumeUpperLimit;
 
-			_activeAudioFades = new List<IAudioFade>(channelCount);
+			_activeAudioFades = new List<IAudioFadeState>(channelCount);
 			_channels = InitializeChannels(audioChannelFactory, channelCount);
 		}
 
+        /// <summary>
+        /// To be called each time the <see cref="AudioController"/> is to be updated.
+        /// </summary>
+        /// <param name="deltaTime"></param>
 		public override void Tick(float deltaTime)
 		{
 			ProcessFades(deltaTime);
@@ -80,9 +87,8 @@ namespace GameWork.Core.Audio
 		public float GetPlaybackTime(AudioClipModel clip)
 		{
 			var playbackTime = -1f;
-			IAudioChannel channel;
 
-			if(TryGetChannel(clip, out channel))
+		    if(TryGetChannel(clip, out var channel))
 			{
 				playbackTime = channel.PlaybackSeconds;
 			}
@@ -97,9 +103,7 @@ namespace GameWork.Core.Audio
 
 		public void Stop(AudioClipModel clip)
 		{
-			IAudioChannel channel;
-
-			if(TryGetChannel(clip, out channel))
+		    if(TryGetChannel(clip, out var channel))
 			{
 				ResetChannel(channel);
 				_occupiedChannels.Remove(clip);
@@ -130,37 +134,35 @@ namespace GameWork.Core.Audio
 			}
 			else
 			{
-				IAudioChannel channel;
 
-				if(TryGetChannel(clip, out channel))
-				{
-					var startVolume = channel.Volume;
-					AddFade(clip, startVolume, _volumeLowerLimit, duration);
-				}
-			}
+                if (TryGetChannel(clip, out var channel))
+                {
+                    var startVolume = channel.Volume;
+                    AddFade(clip, startVolume, _volumeLowerLimit, duration);
+                }
+            }
 		}
 
 		public void Fade(AudioClipModel clip, float targetVolume, float duration)
 		{
-			IAudioChannel channel;
 
-			if (TryGetChannel(clip, out channel))
-			{
-				AddFade(clip, channel.Volume, targetVolume, duration);
-			}
-		}
+            if (TryGetChannel(clip, out var channel))
+            {
+                AddFade(clip, channel.Volume, targetVolume, duration);
+            }
+        }
 
 		public void Fade(AudioClipModel clip, params AudioFadeModel[] audioFades)
 		{
 			TryRemoveFade(clip);
-			var fade = new AudioMultiFade(clip, audioFades);
+			var fade = new AudioMultiFadeState(clip, audioFades);
 			_activeAudioFades.Add(fade);
 		}
 
 		private void AddFade(AudioClipModel clip, float startVolume, float endVolume, float duration)
 		{
 			TryRemoveFade(clip);
-			var fade = new AudioFade(clip, startVolume, endVolume, duration);
+			var fade = new AudioFadeState(clip, startVolume, endVolume, duration);
 			_activeAudioFades.Add(fade);
 		}
 
@@ -201,8 +203,7 @@ namespace GameWork.Core.Audio
 			{
 				if(master != null)
 				{
-					IAudioChannel masterChannel;
-					TryGetChannel(master, out masterChannel);
+				    TryGetChannel(master, out var masterChannel);
 					channel.Play(clip, masterChannel, onComplete);
 				}
 				else
@@ -257,7 +258,7 @@ namespace GameWork.Core.Audio
 			{
 				var fade = _activeAudioFades[i];
 
-				fade.AddDeltaTime(deltaTime);
+				fade.Tick(deltaTime);
 
 				var channel = _occupiedChannels[fade.Clip];
 				channel.Volume = fade.Volume;

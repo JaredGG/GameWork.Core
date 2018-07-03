@@ -3,7 +3,10 @@ using GameWork.Core.Logging.PlatformAdaptors;
 
 namespace GameWork.Core.Logging
 {
-    public class LogUtil
+    /// <summary>
+    /// Static logging utility class.
+    /// </summary>
+    public static class LogUtil
     {
         private static ILogger _logger;
 

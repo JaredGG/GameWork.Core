@@ -18,7 +18,7 @@ namespace GameWork.Core.States.Tick.Input
 
 		protected ICommandQueueTake CommandQueue => _commandQueue;
 
-		protected InputTickState(TStateInput tickStateInput)
+		protected InputTickState(TStateInput tickStateInput, params TickStateTransition[] transitions) : base(transitions)
 		{
 			_tickStateInput = tickStateInput;
 			_commandQueue = new CommandQueue();
@@ -37,9 +37,9 @@ namespace GameWork.Core.States.Tick.Input
 			base.Terminate();
 		}
 
-		internal override void Enter(string fromStateName)
+		internal override void Enter(string fromStateName, object arg)
 		{
-			base.Enter(fromStateName);
+			base.Enter(fromStateName, arg);
 			_tickStateInput.Enter(fromStateName);
 		}
 

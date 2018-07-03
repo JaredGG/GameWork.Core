@@ -4,20 +4,31 @@ namespace GameWork.Core.States.Event
 {
 	public abstract class EventStateTransition
 	{
-		internal event Action<string> EnterStateEvent;
+		internal event Action<string, object> EnterStateEvent;
 		internal event Action<string> ExitStateEvent;
 
-		protected virtual void OnEnter(string fromStateName)
+	    /// <summary>
+	    /// Called when the transition is being Entered.
+	    /// Override and add your logic here.
+	    /// </summary>
+        /// <param name="fromStateName"></param>
+        /// <param name="arg"></param>
+		protected virtual void OnEnter(string fromStateName, object arg)
 		{
 		}
 
-		protected virtual void OnExit(string toStateName)
+        /// <summary>
+        /// Called when the transition is being Exited.
+        /// Override and add your logic here.
+        /// </summary>
+        /// <param name="toStateName"></param>
+        protected virtual void OnExit(string toStateName)
 		{
 		}
 
-		protected virtual void EnterState(string toStateName)
+		protected virtual void EnterState(string toStateName, object arg = null)
 		{
-			EnterStateEvent?.Invoke(toStateName);
+			EnterStateEvent?.Invoke(toStateName, arg);
 		}
 
 		protected virtual void ExitState(string toStateName)
@@ -25,9 +36,9 @@ namespace GameWork.Core.States.Event
 			ExitStateEvent?.Invoke(toStateName);
 		}
 
-		internal virtual void Enter(string fromStateName)
+		internal virtual void Enter(string fromStateName, object arg)
 		{
-			OnEnter(fromStateName);
+			OnEnter(fromStateName, arg);
 		}
 
 		internal virtual void Exit(string toStateName)

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
 using GameWork.Core.Logging.Tests.MockObjects;
-using NUnit.Framework;
+using Xunit;
 
 namespace GameWork.Core.Logging.Tests
 {
     public class LogUtilTests
     {
-        [Test]
+        [Fact]
         public void LogsInfo()
         {
             // Arrange
@@ -22,7 +22,7 @@ namespace GameWork.Core.Logging.Tests
             Assert.True(logger.Messages.All(m => m.LogLevel <= LogLevel.Info));
         }
 
-        [Test]
+        [Fact]
         public void LogsDebug()
         {
             // Arrange
@@ -37,7 +37,7 @@ namespace GameWork.Core.Logging.Tests
             Assert.True(logger.Messages.All(m => m.LogLevel <= LogLevel.Debug));
         }
 
-        [Test]
+        [Fact]
         public void LogsWarning()
         {
             // Arrange
@@ -52,7 +52,7 @@ namespace GameWork.Core.Logging.Tests
             Assert.True(logger.Messages.All(m => m.LogLevel <= LogLevel.Warning));
         }
 
-        [Test]
+        [Fact]
         public void LogsErrorMessage()
         {
             // Arrange
@@ -65,10 +65,10 @@ namespace GameWork.Core.Logging.Tests
 
             // Assert
             Assert.True(logger.Messages.All(m => m.LogLevel <= LogLevel.Error));
-            Assert.True(logger.Messages.Any(m => m.Message != null));
+            Assert.Contains(logger.Messages, m => m.Message != null);
         }
 
-        [Test]
+        [Fact]
         public void LogsErrorException()
         {
             // Arrange
@@ -81,10 +81,10 @@ namespace GameWork.Core.Logging.Tests
 
             // Assert
             Assert.True(logger.Messages.All(m => m.LogLevel <= LogLevel.Error));
-            Assert.True(logger.Messages.Any(m => m.Exception != null));
+            Assert.Contains(logger.Messages, m => m.Exception != null);
         }
 
-        [Test]
+        [Fact]
         public void LogsFatalMessage()
         {
             // Arrange
@@ -97,10 +97,10 @@ namespace GameWork.Core.Logging.Tests
 
             // Assert
             Assert.True(logger.Messages.All(m => m.LogLevel <= LogLevel.Fatal));
-            Assert.True(logger.Messages.Any(m => m.Message != null));
+            Assert.Contains(logger.Messages, m => m.Message != null);
         }
 
-        [Test]
+        [Fact]
         public void LogsFatalException()
         {
             // Arrange
@@ -113,7 +113,7 @@ namespace GameWork.Core.Logging.Tests
 
             // Assert
             Assert.True(logger.Messages.All(m => m.LogLevel <= LogLevel.Fatal));
-            Assert.True(logger.Messages.Any(m => m.Exception != null));
+            Assert.Contains(logger.Messages, m => m.Exception != null);
         }
 
         private void LogAll()

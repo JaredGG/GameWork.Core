@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
 using GameWork.Core.Commands.Interfaces;
 using GameWork.Core.Commands.Tests.TestObjects;
-using NUnit.Framework;
+using Xunit;
 
 namespace GameWork.Core.Commands.Tests
 {
-	[TestFixture]
 	public class CommandResolverTests
 	{
-		[Test]
+		[Fact]
 		public void ResolveSingleCommand()
 		{
-			// Setup
+			// Arrange
 			var values = new List<string>()
 			{
 				"Hannah",
@@ -24,24 +23,23 @@ namespace GameWork.Core.Commands.Tests
 			var testCollection = new TestCollection<string>();
 			var testCollectionCommandResolver = new TestCollectionCommandResolver<string>(testCollection);
 
-			Assert.AreEqual(0, testCollection.Count); 
+			Assert.Empty(testCollection); 
 			
-			// Process
+			// Act
 			foreach (var value in values)
 			{
 				testCollectionCommandResolver.ProcessCommand(new AddToTestCollectionCommand<string>(value));
 			}
 
 			// Assert
-			Assert.AreEqual(values.Count, testCollection.Count);
-
-			CollectionAssert.AreEqual(values, testCollection);
+			Assert.Equal(values.Count, testCollection.Count);
+			Assert.Equal(values, testCollection);
 		}
 
-		[Test]
+		[Fact]
 		public void ResolveMultipleCommands()
 		{
-			// Setup
+			// Arrange
 			var values = new List<string>()
 			{
 				"Hannah",
@@ -54,7 +52,7 @@ namespace GameWork.Core.Commands.Tests
 			var testCollection = new TestCollection<string>();
 			var testCollectionCommandResolver = new TestCollectionCommandResolver<string>(testCollection);
 
-			Assert.AreEqual(0, testCollection.Count);
+			Assert.Empty(testCollection);
 
 			var commands = new List<ICommand>();
 			foreach (var value in values)
@@ -62,19 +60,18 @@ namespace GameWork.Core.Commands.Tests
 				commands.Add(new AddToTestCollectionCommand<string>(value));
 			}
 
-			// Process
+			// Act
 			testCollectionCommandResolver.ProcessCommands(commands);
 
 			// Assert
-			Assert.AreEqual(values.Count, testCollection.Count);
-
-			CollectionAssert.AreEqual(values, testCollection);
+			Assert.Equal(values.Count, testCollection.Count);
+		    Assert.Equal(values, testCollection);
 		}
 
-		[Test]
+		[Fact]
 		public void ResolveCommandQueue()
 		{
-			// Setup
+			// Arrange
 			var values = new List<string>()
 			{
 				"Hannah",
@@ -86,23 +83,22 @@ namespace GameWork.Core.Commands.Tests
 
 			var commandQueue = new CommandQueue();
 
-			// Process
-			foreach (var value in values)
-			{
-				commandQueue.AddCommand(new AddToTestCollectionCommand<string>(value));
-			}
+		    foreach (var value in values)
+		    {
+		        commandQueue.AddCommand(new AddToTestCollectionCommand<string>(value));
+		    }
 
-			var testCollection = new TestCollection<string>();
-			var testCollectionCommandResolver = new TestCollectionCommandResolver<string>(testCollection);
+		    var testCollection = new TestCollection<string>();
+		    var testCollectionCommandResolver = new TestCollectionCommandResolver<string>(testCollection);
 
-			// Assert
-			Assert.AreEqual(0, testCollection.Count);
+		    Assert.Empty(testCollection);
 
-			testCollectionCommandResolver.ProcessCommandQueue(commandQueue);
+            // Act
+            testCollectionCommandResolver.ProcessCommandQueue(commandQueue);
 
-			Assert.AreEqual(values.Count, testCollection.Count);
-
-			CollectionAssert.AreEqual(values, testCollection);
+            // Assert
+            Assert.Equal(values.Count, testCollection.Count);
+			Assert.Equal(values, testCollection);
 		}
 	}
 }

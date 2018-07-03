@@ -3,6 +3,9 @@ using GameWork.Core.Audio.Clip;
 
 namespace GameWork.Core.Audio.PlatformAdaptors
 {
+    /// <summary>
+    /// To be overridden by the platform specific implementation.
+    /// </summary>
     public interface IAudioChannel
     {
         bool IsPlaying { get; }

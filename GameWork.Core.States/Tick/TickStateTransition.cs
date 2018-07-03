@@ -13,10 +13,10 @@ namespace GameWork.Core.States.Tick
 			base.ExitState(toStateName);
 		}
 
-		internal override void Enter(string fromStateName)
+		internal override void Enter(string fromStateName, object arg)
 		{
 			_didChangeState = false;
-			base.Enter(fromStateName);
+			base.Enter(fromStateName, arg);
 		}
 
 		internal bool DidChangeState(float deltaTime)

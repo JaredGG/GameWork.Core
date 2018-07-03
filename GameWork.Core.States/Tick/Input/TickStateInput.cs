@@ -12,6 +12,10 @@ namespace GameWork.Core.States.Tick.Input
 	{
 		protected ICommandQueueWrite CommandQueue;
 
+	    /// <summary>
+	    /// Called when the state is being Ticked.
+	    /// Override and add your logic here.
+	    /// </summary>
 		protected virtual void OnTick(float deltaTime)
 		{
 		}

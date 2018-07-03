@@ -1,30 +1,38 @@
 ﻿using GameWork.Core.Math.Types;
-using NUnit.Framework;
+using Xunit;
 
 namespace GameWork.Core.Math.Tests
 {
     public class Vector3Tests
     {
-        [Test]
-        public void Add()
+        [Fact]
+        public void CanAdd()
         {
+            // Arrange
             var a = new Vector3(1, 2, 3);
             var b = new Vector3(4, 5, 6);
             var expected = new Vector3(5, 7, 9);
 
+            // Act
             var result = a + b;
-            Assert.AreEqual(expected, result);
+
+            // Assert
+            Assert.Equal(expected, result);
         }
 
-        [Test]
-        public void Subtract()
+        [Fact]
+        public void CanSubtract()
         {
+            // Arrange
             var a = new Vector3(1, 2, 3);
             var b = new Vector3(4, 5, 6);
             var expected = new Vector3(-3, -3, -3);
 
+            // Act
             var result = a - b;
-            Assert.AreEqual(expected, result);
+
+            // Assert
+            Assert.Equal(expected, result);
         }
     }
 }

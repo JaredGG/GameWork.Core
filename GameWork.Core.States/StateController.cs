@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GameWork.Core.States
 {
@@ -10,26 +11,24 @@ namespace GameWork.Core.States
 		}
 	}
 
-	public class StateController<TState> : StateControllerBase
+	public class StateController<TState> : IStateController
 		where TState : State
 	{
-		protected readonly Dictionary<string, TState> States = new Dictionary<string, TState>();
-		
-		public string ActiveStateName { protected set; get; }
+	    protected readonly Dictionary<string, TState> States;
+	    protected bool IsProcessingStateChange;
+	    protected string LastActiveStateName;
+	    protected IStateController ParentController;
 
-		protected bool IsProcessingStateChange { get; set; }
-		protected string LastActiveStateName { get; set; }
+	    public string ActiveStateName { protected set; get; }
 
-		public StateController(params TState[] states)
-		{
-			foreach (var state in states)
-			{
-				States.Add(state.Name, state);
-				state.SetStateController(this);
-			}
+        public StateController(params TState[] states)
+        {
+            States = states.ToDictionary(
+                s => s.Name, 
+                s => s);
 		}
 
-		public void Initialize()
+        public void Initialize()
 		{
 			foreach (var state in States.Values)
 			{
@@ -54,15 +53,23 @@ namespace GameWork.Core.States
 			}
 		}
 
+	    /// <summary>
+	    /// Called when the controller is being initialized.
+	    /// Override and add your logic here.
+	    /// </summary>
 		protected virtual void OnInitialize()
 		{
 		}
 
+	    /// <summary>
+	    /// Called when the controller is being terminated.
+	    /// Override and add your logic here.
+	    /// </summary>
 		protected virtual void OnTerminate()
 		{
 		}
 
-		public override void ExitState(string toStateName)
+		public virtual void ExitState(string toStateName)
 		{
 			IsProcessingStateChange = true;
 
@@ -87,16 +94,21 @@ namespace GameWork.Core.States
 			}
 		}
 
-		public override void EnterState(string toStateName)
+		public virtual void EnterState(string toStateName, object arg = null)
 		{
 			if (States.ContainsKey(toStateName))
 			{
-				States[toStateName].Enter(LastActiveStateName);
+				States[toStateName].Enter(LastActiveStateName, arg);
 				ActiveStateName = toStateName;
 			}
+			else if (ParentController != null)
+			{
+			    ParentController.EnterState(toStateName);
+            }
 			else
 			{
-				ParentController.EnterState(toStateName);
+			    throw new ArgumentOutOfRangeException($"No state with the name: {toStateName} was found" +
+			                                          $"There is also no parent {nameof(StateController)} set, which may also resolve the state change.");
 			}
 
 			IsProcessingStateChange = false;

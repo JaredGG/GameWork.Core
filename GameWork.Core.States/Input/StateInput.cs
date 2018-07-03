@@ -14,23 +14,39 @@
 			State = state;
 		}
 
-		protected virtual void OnInitialize()
-		{
-		}
+	    /// <summary>
+	    /// Called when the state is being initialized.
+	    /// Override and add your logic here.
+	    /// </summary>
+	    protected virtual void OnInitialize()
+	    {
+	    }
 
-		protected virtual void OnTerminate()
-		{
-		}
+	    /// <summary>
+	    /// Called when the state is being terminated.
+	    /// Override and add your logic here.
+	    /// </summary>
+	    protected virtual void OnTerminate()
+	    {
+	    }
 
-		protected virtual void OnEnter()
-		{
-		}
+	    /// <summary>
+	    /// Called when the state is being entered.
+	    /// Override and add your logic here.
+	    /// </summary>
+	    protected virtual void OnEnter()
+	    {
+	    }
 
-		protected virtual void OnExit()
-		{
-		}
+	    /// <summary>
+	    /// Called when the state is being exited.
+	    /// Override and add your logic here.
+	    /// </summary>
+	    protected virtual void OnExit()
+	    {
+	    }
 
-		internal void Initialize()
+        internal void Initialize()
 		{
 			OnInitialize();
 		}

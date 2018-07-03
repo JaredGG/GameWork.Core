@@ -6,7 +6,7 @@ namespace GameWork.Core.Commands
 	public abstract class CommandResolver : CommandResolver<ICommand>
 	{
 	}
-
+    
 	public abstract class CommandResolver<TCommand> : ICommandResolver<TCommand>
 		where TCommand : ICommand
 	{

@@ -2,33 +2,43 @@
 {
 	public abstract class State
 	{
-		public abstract string Name { get; }
-		
-		public bool IsActive { get; private set; }
+	    public abstract string Name { get; }
 
-		protected StateControllerBase StateController { get; private set; }
-		
-		protected virtual void OnInitialize()
+	    public bool IsActive { get; private set; }
+
+        /// <summary>
+        /// Called when the state is being Initialized.
+        /// Override and add your logic here.
+        /// </summary>
+        protected virtual void OnInitialize()
 		{
 		}
 
+	    /// <summary>
+	    /// Called when the state is being Terminated.
+	    /// Override and add your logic here.
+	    /// </summary>
 		protected virtual void OnTerminate()
 		{
 		}
 
-		protected virtual void OnEnter()
+        /// <summary>
+        /// Called when the state is being Entered.
+        /// Override and add your logic here.
+        /// </summary>
+        /// <param name="arg"></param>
+        protected virtual void OnEnter(object arg)
 		{
 		}
 
-		protected virtual void OnExit()
+	    /// <summary>
+	    /// Called when the state is being Exited.
+	    /// Override and add your logic here.
+	    /// </summary>
+        protected virtual void OnExit()
 		{
 		}
-
-		internal void SetStateController(StateControllerBase stateController)
-		{
-			StateController = stateController;
-		}
-
+        
 		internal virtual void Initialize()
 		{
 			OnInitialize();
@@ -39,9 +49,9 @@
 			OnTerminate();
 		}
 
-		internal virtual void Enter(string fromStateName)
+		internal virtual void Enter(string fromStateName, object arg)
 		{
-			OnEnter();
+			OnEnter(arg);
 			IsActive = true;
 		}
 

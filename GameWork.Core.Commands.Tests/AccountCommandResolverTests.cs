@@ -1,10 +1,9 @@
 ﻿using GameWork.Core.Commands.Accounts;
 using GameWork.Core.Commands.Tests.TestObjects;
-using NUnit.Framework;
+using Xunit;
 
 namespace GameWork.Core.Commands.Tests
 {
-	[TestFixture]
 	public class AccountCommandResolverTests
 	{
 		private const string Username = "testUser";
@@ -18,36 +17,45 @@ namespace GameWork.Core.Commands.Tests
 			_commandResolver = new TestAccountCommandResolver(_accountContoller);
 		}
 
-		[Test]
+		[Fact]
 		public void Register()
 		{
+            // Arrange
 			Assert.False(_accountContoller.IsRegistered);
-
 			var command = new RegisterCommand(Username, Password);
+
+            // Act
 			_commandResolver.ProcessCommand(command);
 
+            // Assert
 			Assert.True(_accountContoller.IsRegistered);
 		}
 
-		[Test]
+		[Fact]
 		public void Login()
 		{
+            // Arrange
 			Assert.False(_accountContoller.IsLoggedIn);
-
 			var command = new LoginCommand(Username, Password);
+
+            // Act
 			_commandResolver.ProcessCommand(command);
 
+            // Assert
 			Assert.True(_accountContoller.IsLoggedIn);
 		}
 
-		[Test]
+		[Fact]
 		public void Logout()
 		{
+            // Arrange
 			Assert.False(_accountContoller.IsLoggedOut);
-
 			var command = new LogoutCommand();
+
+            // Act
 			_commandResolver.ProcessCommand(command);
 
+            // Assert
 			Assert.True(_accountContoller.IsLoggedOut);
 		}
 	}

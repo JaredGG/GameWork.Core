@@ -1,17 +1,20 @@
 ﻿namespace GameWork.Core.States.Event
 {
-	public class EventStateController : EventStateController<EventState>
+    public class EventStateController : EventStateController<EventState>
+    {
+        public EventStateController(params EventState[] states) : base(states)
+        {
+        }
+    }
+
+    public class EventStateController<TEventState> : StateController<TEventState>
+		where TEventState : EventState  
 	{
-	}
-	
-	public class EventStateController<TState> : StateController<TState>
-		where TState : EventState  
-	{
-		public EventStateController(params TState[] states) : base(states)
+		public EventStateController(params TEventState[] states) : base(states)
 		{
 		}
 		
-		public override void EnterState(string toStateName)
+		public override void EnterState(string toStateName, object arg = null)
 		{
 			if (LastActiveStateName != null)
 			{
@@ -23,7 +26,7 @@
 				States[toStateName].ConnectTransitions(this);
 			}
 
-			base.EnterState(toStateName);
+			base.EnterState(toStateName, arg);
 		}
 	}
 }

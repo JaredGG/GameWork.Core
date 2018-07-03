@@ -2,40 +2,37 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameWork.Core.Components.Interfaces;
-using System.Reflection;
 
 namespace GameWork.Core.Components
 {
     public class ComponentContainer
     {
-        private readonly Dictionary<Type, IComponent> Components = new Dictionary<Type, IComponent>();
+        private readonly Dictionary<Type, IComponent> _components = new Dictionary<Type, IComponent>();
 
         public bool HasComponent<TComponent>() where TComponent : IComponent
         {
             var componentType = typeof(TComponent);
 
-            return Components.ContainsKey(componentType)
-                || Components.Keys.Any(k => k.IsAssignableFrom(componentType));
+            return _components.ContainsKey(componentType)
+                || _components.Keys.Any(k => k.IsAssignableFrom(componentType));
         }
 
         public bool TryGetComponent<TComponent>(out TComponent component) where TComponent : IComponent
         {
             var didGetComponent = false;
             component = default(TComponent);
-            IComponent baseTypeComponent;
 
-            if (Components.TryGetValue(typeof(TComponent), out baseTypeComponent))
+            if (_components.TryGetValue(typeof(TComponent), out var baseTypeComponent))
             {
                 didGetComponent = true;
                 component = (TComponent) baseTypeComponent;
             }
             else
             {
-                Type assignableType;
-                if (TryGetAssignableType<TComponent>(out assignableType))
+                if (TryGetAssignableType<TComponent>(out var assignableType))
                 {
                     didGetComponent = true;
-                    component = (TComponent)Components[assignableType];
+                    component = (TComponent)_components[assignableType];
                 }
             }
 
@@ -47,9 +44,9 @@ namespace GameWork.Core.Components
             var didAddComponent = false;
             var type = component.GetType();
 
-            if (!Components.ContainsKey(type))
+            if (!_components.ContainsKey(type))
             {
-                Components[type] = component;
+                _components[type] = component;
                 didAddComponent = true;
             }
 
@@ -70,16 +67,15 @@ namespace GameWork.Core.Components
         {
             var didRemove = false;
 
-            if (Components.Remove(findType))
+            if (_components.Remove(findType))
             {
                 didRemove = true;
             }
             else
             {
-                Type assignableType;
-                if(TryGetAssignableType(findType, out assignableType))
+                if(TryGetAssignableType(findType, out var assignableType))
                 {
-                    didRemove = Components.Remove(assignableType);
+                    didRemove = _components.Remove(assignableType);
                 }
             }
 
@@ -92,7 +88,7 @@ namespace GameWork.Core.Components
         }
         private bool TryGetAssignableType(Type findType, out Type assignableType)
         {
-            assignableType = Components.Keys.FirstOrDefault(k => k.IsAssignableFrom(findType));
+            assignableType = _components.Keys.FirstOrDefault(k => k.IsAssignableFrom(findType));
 
             return assignableType != null;
         }

@@ -1,11 +1,11 @@
 ﻿namespace GameWork.Core.States.Tests.TestObjects
 {
-    public class TickStateTransition : States.Tick.TickStateTransition
+    public class TickStateTransition : Tick.TickStateTransition
     {
-        private readonly StateTransitionBlackboard _transitionBlackboard;
+        private readonly TickStateTransitionBlackboard _transitionBlackboard;
 	    private readonly string _toStateName;
 
-        public TickStateTransition(string toStateName, StateTransitionBlackboard transitionBlackboard)
+        public TickStateTransition(string toStateName, TickStateTransitionBlackboard transitionBlackboard)
         {
             _toStateName = toStateName;
             _transitionBlackboard = transitionBlackboard;

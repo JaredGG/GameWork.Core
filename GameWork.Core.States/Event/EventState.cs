@@ -6,15 +6,15 @@ namespace GameWork.Core.States.Event
 	{
 		private readonly List<EventStateTransition> _transitions = new List<EventStateTransition>();
 
-		public void AddTransitions(params EventStateTransition[] stateTransitions)
+	    protected EventState(params EventStateTransition[] stateTransitions)
+	    {
+	        _transitions.AddRange(stateTransitions);
+        }
+        
+		internal override void Enter(string fromStateName, object arg)
 		{
-			_transitions.AddRange(stateTransitions);
-		}
-
-		internal override void Enter(string fromStateName)
-		{
-			base.Enter(fromStateName);
-			_transitions.ForEach(t => t.Enter(fromStateName));
+			base.Enter(fromStateName, arg);
+			_transitions.ForEach(t => t.Enter(fromStateName, arg));
 		}
 
 		internal override void Exit(string toStateName)
@@ -23,7 +23,7 @@ namespace GameWork.Core.States.Event
 			base.Exit(toStateName);
 		}
 
-		internal void ConnectTransitions(StateControllerBase stateController)
+		internal void ConnectTransitions(IStateController stateController)
 		{
 			foreach (var transition in _transitions)
 			{
@@ -32,7 +32,7 @@ namespace GameWork.Core.States.Event
 			}
 		}
 
-		internal void DisconnectTransisions(StateControllerBase stateController)
+		internal void DisconnectTransisions(IStateController stateController)
 		{
 			foreach (var transition in _transitions)
 			{

@@ -14,26 +14,21 @@ namespace GameWork.Core.Commands.Tests.TestObjects
 
 		public override void ProcessCommand(ICommand command)
 		{
-			var registerCommand = command as RegisterCommand;
-			if (registerCommand != null)
-			{
-				registerCommand.Execute(_accountController);
-				return;
-			}
+            
+		    switch (command)
+		    {
+		        case RegisterCommand registerCommand:
+		            registerCommand.Execute(_accountController);
+		            break;
 
-			var loginCommand = command as LoginCommand;
-			if (loginCommand != null)
-			{
-				loginCommand.Execute(_accountController);
-				return;
-			}
+		        case LoginCommand loginCommand:
+		            loginCommand.Execute(_accountController);
+		            break;
 
-			var logoutCommand = command as LogoutCommand;
-			if (logoutCommand != null)
-			{
-				logoutCommand.Execute(_accountController);
-				return;
-			}
+                case LogoutCommand logoutCommand:
+		            logoutCommand.Execute(_accountController);
+                    break;
+            }
 		}
 	}
 }
