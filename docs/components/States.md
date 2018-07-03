@@ -64,3 +64,42 @@ In this scenario, a child state would write to the message queue. The parent sta
 With the sub state controller setup in the recommended way, it would be terminated, exiting all sub states when the parent state is exited.
 
 This method has the benefit of being both flexible and transparent.
+
+### Example
+
+Imagine the following hierarchy:
+
+- **RootStateController**
+  - **GameLobbyState**
+  - **BattleState**: *contains the BattleSimulator.*
+    - **BattleSubStateController**
+      - **PlayingState**
+      - **PausedState**
+      - **GameOverState**
+  - **SettingState**
+  - **ShopState**
+
+The switching from **PlayingState** to **PausedState** is triggered by a transition that was added to the **PlayingState** which is triggered when the player presses the *battle-pause* button. This transition tells the **BattleSubStateController** to perform the switch.
+
+Switching from **PlayingState** to **GameOverState** is triggered by another transition that was added to the **PlayingState** which is triggered when the **BattleSimulator** broadcasts that the *battle-over* message. This transition tells the **BattleSubStateController** to perform the switch.
+
+Now when the player presses the *game-over-continue* button while in the **GameOverState**, a transition that has been added to **BattleState** is triggered which tells the **RoomStateController** to switch states to the **GameLobbyState**.
+
+This works because the parent state's (**BattleState**) transitions are still active while it's sub states are being processed. 
+
+State switching in the **BattleSubStateController**:  
+|  |  |  | Transition Trigger Condition|
+| - | - | - | - |
+**GameLobbyState** | -> | **BattleState** | player pressed *start-battle* button. 
+**GameLobbyState** | <- | **BattleState** | player pressed *game-over-continue* button.
+**GameLobbyState** | -> | **SettingState** | player pressed *open-settings* button.
+**GameLobbyState** | <- | **SettingState** | player pressed *close-settings* button.
+**GameLobbyState** | -> | **ShopState** | player pressed *open-shop* button.
+**GameLobbyState** | <- | **ShopState** | player pressed *close-shop* button.
+
+ State switching in the **BattleSubStateController**:  
+|  |  |  | Transition Trigger Condition|
+| - | - | - | - |
+**PlayingState** | -> | **PausedState** | player pressed *battle-pause* button.    
+**PlayingState** | <- | **PausedState** | player pressed *battle-resume* button.
+**PlayingState** | -> | **GameOverState** | **BattleSimulator** broadcasts *battle-over* message.
