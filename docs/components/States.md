@@ -32,9 +32,9 @@ The base State doesn't handle StateInput so an InputState is required.
     - **InputTickState**: *Tick state that has StateInput which is Ticked. It has a take only command queue that is to be written to from the TickStateInput and taken from in this state containing the game logic.*
     - **TickStateInput**: *StateInput that is Ticked. It has a write only command queue that is to be written to from this state and taken from in the InputTickState containing the game logic.*
     
-**Note:** Because this is a hierarchy, all the derived items incorporate all the functionality of their deriving types. 
+**Note:** Because this is a hierarchy, all the derived items incorporate all the functionality of the derived from types.
 
-So a TickState can have EventStateTransitions added to it.
+So a TickState incorporates the functionality of the EventState and can therefore have EventStateTransitions added to it.
 
 # Usage
 1. Create your states (Optional: and state inputs):  
