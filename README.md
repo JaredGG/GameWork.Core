@@ -4,7 +4,7 @@ Engine agnostic C# Framework for building games.
 
 ## Compatibility
 | Runtime | Version
- - | - 
+| - | - |
 NetCoreApp | 2.0
 Net Framework | 3.5, 4.6
 
