@@ -10,7 +10,7 @@ Net Framework | 3.5, 4.6
 
 ## Components
 Name | Function | Docs
- - | - | -
+| - | - | - |
 Audio | Functionalities that facilitate playing and fading audio. AudioChannels are overridable for your platform specific implementation. | [Doc](docs/components/Audio.md)
 Commands | Commands pattern, Command Queue and Command Resolver.  | [Doc](docs/components/Commands.md)
 Components | Simple component pattern with a component container. | [Doc](docs/components/Components.md)
