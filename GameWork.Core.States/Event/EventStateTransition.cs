@@ -26,11 +26,20 @@ namespace GameWork.Core.States.Event
 		{
 		}
 
+        /// <summary>
+        /// Call this to initiate state change.
+        /// </summary>
+        /// <param name="toStateName"></param>
+        /// <param name="arg"></param>
 		protected virtual void EnterState(string toStateName, object arg = null)
 		{
 			EnterStateEvent?.Invoke(toStateName, arg);
 		}
 
+        /// <summary>
+        /// Call this to complete state change.
+        /// </summary>
+        /// <param name="toStateName"></param>
 		protected virtual void ExitState(string toStateName)
 		{
 			ExitStateEvent?.Invoke(toStateName);

@@ -6,7 +6,7 @@ namespace GameWork.Core.States.Tick
 	{
 		private bool _didChangeState;
 		protected abstract void OnTick(float deltaTime);
-
+        
 		protected override void ExitState(string toStateName)
 		{
 			_didChangeState = true;
@@ -22,7 +22,6 @@ namespace GameWork.Core.States.Tick
 		internal bool DidChangeState(float deltaTime)
 		{
 			OnTick(deltaTime);
-
 			return _didChangeState;
 		}
 	}

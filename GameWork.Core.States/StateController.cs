@@ -17,7 +17,6 @@ namespace GameWork.Core.States
 	    protected readonly Dictionary<string, TState> States;
 	    protected bool IsProcessingStateChange;
 	    protected string LastActiveStateName;
-	    protected IStateController ParentController;
 
 	    public string ActiveStateName { protected set; get; }
 
@@ -82,15 +81,7 @@ namespace GameWork.Core.States
 
 			if (!States.ContainsKey(toStateName))
 			{
-				if (ParentController != null)
-				{
-					ParentController.ExitState(toStateName);
-				}
-				else
-				{
-					throw new ArgumentOutOfRangeException($"No state with the name: {toStateName} was found" +
-															$"There is also no parent {nameof(StateController)} set, which may also resolve the state change.");
-				}
+				throw new ArgumentOutOfRangeException($"No state with the name: {toStateName} was found.");
 			}
 		}
 
@@ -101,15 +92,10 @@ namespace GameWork.Core.States
 				States[toStateName].Enter(LastActiveStateName, arg);
 				ActiveStateName = toStateName;
 			}
-			else if (ParentController != null)
-			{
-			    ParentController.EnterState(toStateName);
-            }
 			else
 			{
-			    throw new ArgumentOutOfRangeException($"No state with the name: {toStateName} was found" +
-			                                          $"There is also no parent {nameof(StateController)} set, which may also resolve the state change.");
-			}
+			    throw new ArgumentOutOfRangeException($"No state with the name: {toStateName} was found.");
+            }
 
 			IsProcessingStateChange = false;
 		}
