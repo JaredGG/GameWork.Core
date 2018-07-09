@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace GameWork.Core.IO.PlatformAdaptors
+namespace GameWork.Core.IO.Loaders.PlatformAdapters
 {
     /// <summary>
     /// Open file and return stream.
